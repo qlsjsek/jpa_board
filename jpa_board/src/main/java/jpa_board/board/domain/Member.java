@@ -27,6 +27,8 @@ public class Member {
 	private String name;
 	private String password;
 	
+	private boolean deleted = false;
+	
     @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
     private List<Board> boards;
 

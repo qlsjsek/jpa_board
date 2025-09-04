@@ -22,7 +22,7 @@
     </div>
 
     <!-- 댓글 작성 -->
-    <form th:action="@{/board/{boardId}/comment(boardId=${board.boardId})}" method="post">
+    <form th:if="${session.loginUser != null}" th:action="@{/board/{boardId}/comment(boardId=${board.boardId})}" method="post">
         <textarea name="content" placeholder="댓글 작성"></textarea>
         <button type="submit">등록</button>
     </form>
