@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.title}">게시글 상세</title>
+</head>
+<body>
+    <h1 th:text="${board.title}"></h1>
+    <p th:text="${board.content}"></p>
+    <p>작성자: <span th:text="${board.writer.name}"></span></p>
+
+    <!-- 좋아요 버튼 -->
+    <form th:action="@{/board/{boardId}/like(boardId=${board.boardId})}" method="post">
+        <button type="submit" th:text="${likedByUser} ? '❤️ 좋아요 취소' : '🤍 좋아요'"></button>
+    </form>
+    <p>좋아요 수: <span th:text="${board.likes.size()}"></span></p>
+
+    <!-- 댓글 목록 -->
+    <h3>댓글</h3>
+    <div th:each="comment : ${board.comments}">
+        <p><b th:text="${comment.member.name}"></b>: <span th:text="${comment.content}"></span></p>
+    </div>
+
+    <!-- 댓글 작성 -->
+    <form th:action="@{/board/{boardId}/comment(boardId=${board.boardId})}" method="post">
+        <textarea name="content" placeholder="댓글 작성"></textarea>
+        <button type="submit">등록</button>
+    </form>
+
+    <!-- 뒤로가기 -->
+    <p><a th:href="@{/board}">목록으로 돌아가기</a></p>
+	
+	<div th:if="${isAuthor}">
+	    <a th:href="@{/board/{boardId}/edit(boardId=${board.boardId})}">수정</a>
+
+	    <form th:action="@{/board/{boardId}/delete(boardId=${board.boardId})}" method="post" style="display:inline">
+	        <button type="submit">삭제</button>
+	    </form>
+	</div>
+</body>
+</html>

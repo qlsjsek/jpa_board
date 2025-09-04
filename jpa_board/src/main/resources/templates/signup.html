@@ -1,21 +1,81 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Hello</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    
+	<meta charset="UTF-8">
+	<title>회원가입</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
+
 <body>
-<h1>회원가입</h1>
-<form method="post" action="/member/signup">
-    <table class="table">
-        <tr><td>아이디: <input type="text" name="loginId" required/></td></tr>
-        <tr><td>이름: <input type="text" name="name" required/></td></tr>
-        <tr><td>비밀번호: <input type="text" name="password" required/></td></tr>
-        <tr><td>비밀번호 확인: <input type="text" name="confirmPassword" required/></td> </tr>
-    </table>
-    <input type="submit" value="가입하기" />
-    <a href="http://localhost:8080">돌아가기</a>
-</form>
+	<h2>회원가입</h2>
+	<form th:action="@{/signup}" method="post">
+		<input type="text" name="loginId" id="loginId" placeholder="아이디" />
+		<button type="button" id="checkIdBtn">중복 확인</button>
+		<input type="password" name="password" placeholder="비밀번호" />
+		<input type="text" name="name" placeholder="이름" />
+		<button type="submit" id="signupBtn">회원가입</button>
+	</form>
 </body>
+
 </html>
+
+<script>
+	$(document).ready(function () {
+		//아이디 중복체크 미확인 회원가입 버튼 비활성화
+		$("#signupBtn").prop("disabled", true);
+		
+		$("#checkIdBtn").click(function () {
+			var loginId = $("#loginId").val().trim();
+			if (loginId === "") {
+				alert("아이디를 입력해주세요");
+				return;
+			}
+
+			$.ajax({
+				url: "/checkId",
+				type: "GET",
+				data: {loginId: loginId},
+				success: function (exists) {
+					if (exists) {
+						alert("이미 존재하는 아이디입니다.");
+					} else {
+						alert("사용 가능한 아이디입니다.");
+						//중복체크 후 비활성화 해제
+						$("#signupBtn").prop("disabled", false);
+					}
+				},
+				error: function () {
+					alert("오류가 발생했습니다.");
+				}
+			});
+		});
+		
+		$("#signupBtn").click(function() {
+			
+			var loginId = $("#loginId").val().trim();
+			if (loginId === "") {
+				alert("아이디를 입력해주세요");
+				return;
+			}
+			
+			$.ajax({
+				url: "/checkId",
+				type: "GET",
+				data: {loginId: loginId},
+				success: function(exists) {
+					if(exists) { 
+						alert("이미 존재하는 아이디입니다. 다른 아이디를 사용해주세요");
+						return;
+					} else {
+						alert("회원가입에 성공했습니다.");
+					}
+				},
+				error: function() {
+					alert("오류가 발생했습니다.");
+				}
+			});
+		});		
+	});
+
+</script>

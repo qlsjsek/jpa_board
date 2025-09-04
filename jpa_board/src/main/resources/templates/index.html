@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<h2>홈</h2>
+
+<!-- 로그인 상태가 아니면 회원가입/로그인 버튼 보여주기 -->
+<div th:if="${session.loginUser == null}">
+    <a th:href="@{/signup}">회원가입</a> |
+    <a th:href="@{/login}">로그인</a> |
+</div>
+
+<!-- 로그인 상태면 환영 메시지와 로그아웃 버튼 보여주기 -->
+<div th:if="${session.loginUser != null}">
+    <span th:text="'환영합니다, ' + ${session.loginUser.name} + '님'"></span> |
+    <a th:href="@{/logout}">로그아웃</a> |
+    <a th:href="@{/board}">게시판</a>
+</div>
+
+<!-- 비회원도 게시판 접근 가능하게 할 경우 아래 코드 유지 -->
+<div th:if="${session.loginUser == null}">
+    <a th:href="@{/board}">게시판</a>
+</div>
+
+</body>
+</html>
+

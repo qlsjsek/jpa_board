@@ -3,10 +3,13 @@ package jpa_board.board.domain;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,21 +21,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long memberId;
-	private String loginId;
-	private String name;
-	private String password;
-	
-    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
-    private List<Board> boards;
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+public class Board {
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long boardId;
+    private String title;
+    @Column(length = 1000)
+    private String content;
     
-    @OneToMany(mappedBy = "member")
+    @ManyToOne
+    @JoinColumn(name="member_id")
+    private Member writer;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardLike> likes;
+
 }
