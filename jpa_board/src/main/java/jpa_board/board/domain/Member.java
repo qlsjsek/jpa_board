@@ -5,17 +5,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
+@Data
 @Entity
 @Builder
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class member {
+public class Member {
 	@Id
 	@Column(name = "member_id", nullable = false, length = 20)
 	private Long memberId;
